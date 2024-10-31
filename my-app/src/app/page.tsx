@@ -63,25 +63,31 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <h1>bot:</h1>
+    <div className="m-10">
       <div>
         {messages.map((msg, index) => (
-          <p key={index}>
-            <strong>{msg.sender}:</strong> {msg.text}
-          </p>
+          <div key={index} className="w-full h-auto">
+            <strong>{msg.sender}:</strong>
+            <br />
+            {msg.text}
+            <br />
+          </div>
         ))}
       </div>
       <br />
-      <textarea
-        value={userInput}
-        onChange={(e) => setUserInput(e.target.value)}
-        placeholder="code in here"
-        className="w-1/2 bg-slate-100"
-      />
-      <br />
-      <br />
-      <button onClick={sendMessage}>送信</button>
+      <div className="relative w-full">
+        <textarea
+          value={userInput}
+          onChange={(e) => setUserInput(e.target.value)}
+          placeholder="ここにコードを入力してください"
+          className="bg-slate-100 w-full"
+          rows={5}
+        />
+        <br />
+        <button onClick={sendMessage} className="absolute right-0">
+          送信
+        </button>
+      </div>
     </div>
   );
 }
