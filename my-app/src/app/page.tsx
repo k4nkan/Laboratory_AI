@@ -1,24 +1,29 @@
-"use client"
-// pages/index.tsx
+// src/app/page.tsx
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function Home() {
-  const [userInput, setUserInput] = useState('');
-  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
+  const [userInput, setUserInput] = useState("");
+  const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
+    []
+  );
 
   const sendMessage = async () => {
     if (!userInput.trim()) return;
 
     // ユーザーのメッセージを追加
-    setMessages((prevMessages) => [...prevMessages, { sender: 'User', text: userInput }]);
-    setUserInput('');
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: "User", text: userInput },
+    ]);
+    setUserInput("");
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:3000/api/chat`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ message: userInput }),
       });
@@ -27,28 +32,33 @@ export default function Home() {
 
       // APIからの応答を追加
       if (response.ok) {
-        setMessages((prevMessages) => [...prevMessages, { sender: 'Bot', text: data.message }]);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { sender: "Bot", text: data.message },
+        ]);
       } else {
         setMessages((prevMessages) => [
           ...prevMessages,
-          { sender: 'Bot', text: 'エラーが発生しました。' },
+          { sender: "Bot", text: "エラーが発生しました。" },
         ]);
       }
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("メッセージ送信中のエラー:", error);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: 'Bot', text: 'エラーが発生しました。' },
+        { sender: "Bot", text: "エラーが発生しました。" },
       ]);
     }
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
+    <div>
       <h1>Chatbot</h1>
-      <div style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
+      <div>
         {messages.map((msg, index) => (
-          <p key={index}><strong>{msg.sender}:</strong> {msg.text}</p>
+          <p key={index}>
+            <strong>{msg.sender}:</strong> {msg.text}
+          </p>
         ))}
       </div>
       <input
@@ -56,9 +66,8 @@ export default function Home() {
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}
         placeholder="メッセージを入力してください"
-        style={{ width: '80%', padding: '10px' }}
       />
-      <button onClick={sendMessage} style={{ padding: '10px' }}>送信</button>
+      <button onClick={sendMessage}>送信</button>
     </div>
   );
 }
