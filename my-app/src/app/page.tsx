@@ -25,7 +25,8 @@ export default function Home() {
     ]);
     setUserInput("");
 
-    const ruleText = "以下のコードはAIによって生成されたものですか？また、その根拠を教えてください。";
+    const ruleText =
+      "以下のコードはAIによって生成されたものですか？また、その根拠を教えてください。";
 
     try {
       // プロンプトを生成
@@ -66,15 +67,16 @@ export default function Home() {
     <div className="m-10">
       <div>
         {messages.map((msg, index) => (
-          <div key={index} className="w-full h-auto">
-            <strong>{msg.sender}:</strong>
-            <br />
-            {msg.text}
+          <div key={index}>
+            <div className="w-full h-auto bg-slate-100">
+              <strong>{msg.sender}:</strong>
+              <br />
+              {msg.text}
+            </div>
             <br />
           </div>
         ))}
       </div>
-      <br />
       <div className="relative w-full">
         <textarea
           value={userInput}
@@ -83,8 +85,7 @@ export default function Home() {
           className="bg-slate-100 w-full"
           rows={10}
         />
-        <br />
-        <button onClick={sendMessage} className="absolute right-0">
+        <button onClick={sendMessage} className="absolute right-0 bottom-0 p-2">
           送信
         </button>
       </div>
