@@ -64,7 +64,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Chatbot</h1>
+      <h1>bot:</h1>
       <div>
         {messages.map((msg, index) => (
           <p key={index}>
@@ -73,11 +73,11 @@ export default function Home() {
         ))}
       </div>
       <br />
-      <input
-        type="text"
+      <textarea
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}
         placeholder="code in here"
+        className="w-1/2 bg-slate-100"
       />
       <br />
       <br />
