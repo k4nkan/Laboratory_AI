@@ -1,4 +1,3 @@
-// src/app/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -8,6 +7,13 @@ export default function Home() {
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
     []
   );
+
+  const createPrompt = (userInput: string, promptText: string): string => {
+    return `
+      ${promptText}
+      ${userInput}
+    `;
+  };
 
   const sendMessage = async () => {
     if (!userInput.trim()) return;
@@ -19,13 +25,18 @@ export default function Home() {
     ]);
     setUserInput("");
 
+    const ruleText = "以下のコードはAIによって作成されたものですか？";
+
     try {
-      const response = await fetch(`http://localhost:3000/api/chat`, {
+      // プロンプトを生成
+      const prompt = createPrompt(userInput, ruleText);
+
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: userInput }),
+        body: JSON.stringify({ message: prompt }),
       });
 
       const data = await response.json();
@@ -53,7 +64,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Chatbot</h1>
+      <h1>bot:</h1>
       <div>
         {messages.map((msg, index) => (
           <p key={index}>
@@ -61,12 +72,15 @@ export default function Home() {
           </p>
         ))}
       </div>
-      <input
-        type="text"
+      <br />
+      <textarea
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}
-        placeholder="メッセージを入力してください"
+        placeholder="code in here"
+        className="w-1/2 bg-slate-100"
       />
+      <br />
+      <br />
       <button onClick={sendMessage}>送信</button>
     </div>
   );
