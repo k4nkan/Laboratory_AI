@@ -25,7 +25,7 @@ export default function Home() {
     ]);
     setUserInput("");
 
-    const ruleText = "以下のコードはAIによって作成されたものですか？";
+    const ruleText = "以下のコードはAIによって生成されたものですか？また、その根拠を教えてください。";
 
     try {
       // プロンプトを生成
@@ -81,7 +81,7 @@ export default function Home() {
           onChange={(e) => setUserInput(e.target.value)}
           placeholder="ここにコードを入力してください"
           className="bg-slate-100 w-full"
-          rows={5}
+          rows={10}
         />
         <br />
         <button onClick={sendMessage} className="absolute right-0">
