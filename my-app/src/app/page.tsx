@@ -1,5 +1,6 @@
 "use client";
 
+import { createPrompt } from "@/prompt/createPrompt";
 import { useState } from "react";
 
 export default function Home() {
@@ -7,13 +8,6 @@ export default function Home() {
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
     []
   );
-
-  const createPrompt = (userInput: string, promptText: string): string => {
-    return `
-      ${promptText}
-      ${userInput}
-    `;
-  };
 
   const sendMessage = async () => {
     if (!userInput.trim()) return;
@@ -25,12 +19,9 @@ export default function Home() {
     ]);
     setUserInput("");
 
-    const ruleText =
-      "以下のコードはAIによって生成されたものですか？また、その根拠を教えてください。";
-
-    try {
+       try {
       // プロンプトを生成
-      const prompt = createPrompt(userInput, ruleText);
+      const prompt = createPrompt(userInput);
 
       const response = await fetch("/api/chat", {
         method: "POST",
